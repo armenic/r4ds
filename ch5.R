@@ -98,13 +98,14 @@ transmute(flights,
 zz <- flights %>%
   select(dep_time, sched_dep_time) %>%
   mutate(
-    dep_time_str = str_pad(dep_time, 4, "left", "0"),
-    sched_dep_time_str = str_pad(sched_dep_time, 4, "left", "0"),
+    dep_time_str = sub("^00", "24", str_pad(dep_time, 4, "left", "0")),
+    sched_dep_time_str = 
+      sub("^00", "24", str_pad(sched_dep_time, 4, "left", "0")),
     dep_time_num = as.numeric(substr(dep_time_str, 1, 2)) * 60 +
       as.numeric(substr(dep_time_str, 3, 4)),
     sched_dep_time_num = as.numeric(substr(sched_dep_time_str, 1, 2)) * 60 +
       as.numeric(substr(sched_dep_time_str, 3, 4))
-  ) %>% 
+  ) %>%
   select(!c(dep_time_str, sched_dep_time_str))
 View(zz)
 
@@ -113,14 +114,49 @@ View(zz)
 # you see? What do you need to do to fix it?
 
 
+zz <- flights %>% 
+  mutate(
+    arr_time_str = sub("^00", "24", str_pad(arr_time, 4, "left", "0")),
+    dep_time_str = sub("^00", "24", str_pad(dep_time, 4, "left", "0")),
+    arr_time_num = as.numeric(substr(arr_time_str, 1, 2)) * 60 +
+      as.numeric(substr(arr_time_str, 3, 4)),
+    dep_time_num = as.numeric(substr(dep_time_str, 1, 2)) * 60 +
+      as.numeric(substr(dep_time_str, 3, 4)),
+    arr_time_num = 
+      if_else(arr_time_num < dep_time_num, arr_time_num + 1440, arr_time_num),
+    diff_ = arr_time_num - dep_time_num
+  ) %>% 
+  select(c(arr_time, dep_time, arr_time_num, dep_time_num, air_time, diff_))
+  
+View(zz)
 
 
+# Compare dep_time, sched_dep_time, and dep_delay. How would you expect those
+# three numbers to be related?
+  
+zz <- flights %>%
+  select(dep_time, sched_dep_time, dep_delay) %>%
+  mutate(
+    dep_time_str = sub("^00", "24", str_pad(dep_time, 4, "left", "0")),
+    sched_dep_time_str = 
+      sub("^00", "24", str_pad(sched_dep_time, 4, "left", "0")),
+    dep_time_num = as.numeric(substr(dep_time_str, 1, 2)) * 60 +
+      as.numeric(substr(dep_time_str, 3, 4)),
+    sched_dep_time_num = as.numeric(substr(sched_dep_time_str, 1, 2)) * 60 +
+      as.numeric(substr(sched_dep_time_str, 3, 4))
+  ) %>%
+  select(!c(dep_time_str, sched_dep_time_str))
+View(zz)
 
 
+# Find the 10 most delayed flights using a ranking function. How do you want to
+# handle ties? Carefully read the documentation for min_rank().
 
-
-
-
+zz <- flights %>% 
+  mutate(rank_ = min_rank(desc(dep_delay))) %>% 
+  arrange(rank_)
+  
+View(zz)
 
 
 
