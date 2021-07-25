@@ -1,5 +1,5 @@
 # Reviewing https://r4ds.had.co.nz
 
 ## Current Chapter 
-### Ch 9
-https://r4ds.had.co.nz/wrangle-intro.html
+### Ch 12
+https://r4ds.had.co.nz/tidy-data.html
