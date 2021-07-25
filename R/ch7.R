@@ -1,4 +1,8 @@
 library(tidyverse)
+
+
+# variation ---------------------------------------------------------------
+
 # variation is a tendency of the values of a variable to change from measurement
 # to measurement. The best way to understand the pattern of variation is to 
 # visualize the distribution of the variable's values.
@@ -98,10 +102,66 @@ diamonds %>%
 
 
 
+# covariation -------------------------------------------------------------
+
+
+# continuous --------------------------------------------------------------
+
+
+
+# If a variation describes the behavior within a variable, covariation describes
+# the behavior between variables. Covariation is the tendency for the values of 
+# two or more variables to vary together in a related way.
+
+
+ggplot(diamonds, aes(x = price)) + 
+  geom_freqpoly(aes(color = cut), binwidth = 500)
+
+# to make polygons comparable we can use the density as the y axis, which is the
+# standardized area under curve (equal to 1)
+
+ggplot(diamonds, aes(x = price, y = ..density..)) +
+  geom_freqpoly(aes(color = cut), binwidth = 500)
+
+ggplot(diamonds, aes(x = cut, y = price)) + 
+  geom_boxplot()
+
+ggplot(mpg) + 
+  geom_boxplot(aes(x = reorder(class, hwy, median), y = hwy))
+
+# exercises ---------------------------------------------------------------
+
+# Use what you’ve learned to improve the visualisation of the departure times of
+# cancelled vs. non-cancelled flights.
+
+nycflights13::flights %>% 
+  mutate(
+    cancelled = is.na(dep_time),
+    sched_hour = sched_dep_time %/% 100,
+    sched_min = sched_dep_time %% 100,
+    sched_dep_time = sched_hour + sched_min / 60
+  ) %>% 
+  ggplot(mapping = aes(sched_dep_time, ..density..)) + 
+  geom_freqpoly(mapping = aes(colour = cancelled), binwidth = 1/4)
+
+
+# What variable in the diamonds dataset is most important for predicting the
+# price of a diamond? How is that variable correlated with cut? Why does the
+# combination of those two relationships lead to lower quality diamonds being
+# more expensive?
+
+ggplot(diamonds, aes(x = carat, y = ..density..)) + 
+  geom_freqpoly(aes(color = cut), binwidth = 5)
+
+ggplot(diamonds) + 
+  geom_boxplot(aes(x = cut, y = carat))
+# it seems lower quality diamonds are bigger, hence are more expensive on
+# average
 
 
 
 
+# categorical -------------------------------------------------------------
 
 
 
