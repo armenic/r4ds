@@ -84,6 +84,7 @@ flights %>%
 
 select(flights, contains("TIME", ignore.case = FALSE))
 
+# if you want to keep the new variables only
 transmute(flights,
           gain = dep_delay - arr_delay,
           hours = air_time / 60,
