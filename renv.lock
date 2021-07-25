@@ -422,6 +422,13 @@
       "Repository": "CRAN",
       "Hash": "7c24ab3a1e3afe50388eb2d893aab255"
     },
+    "nycflights13": {
+      "Package": "nycflights13",
+      "Version": "1.0.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "61eb941328b49a62d7f9816dfed7d959"
+    },
     "openssl": {
       "Package": "openssl",
       "Version": "1.4.4",
