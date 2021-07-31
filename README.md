@@ -2,4 +2,4 @@
 
 ## Current Chapter 
 ### Ch 23
-https://r4ds.had.co.nz/model-basics.html#predictions
+https://r4ds.had.co.nz/model-basics.html#formulas-and-model-families

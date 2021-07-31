@@ -168,3 +168,29 @@ best <- optim(c(0, 0), measure_distance, data = sim1a)
 ggplot(sim1a, aes(x, y)) +
   geom_point(size = 2, color = "grey30") +
   geom_abline(intercept = best$par[1], slope = best$par[2])
+
+
+
+# predictions -------------------------------------------------------------
+
+grid <- sim1 %>% 
+  data_grid(x)
+
+grid <- grid %>% 
+  add_predictions(sim1_mod)
+
+ggplot(sim1, aes(x)) + 
+  geom_point(aes(y = y)) + 
+  geom_line(aes(y = pred), data = grid, color = "red", size = 1)
+
+
+sim1 <- sim1 %>% 
+  add_residuals(sim1_mod)
+
+ggplot(sim1, aes(resid)) +
+  geom_freqpoly(binwidth = 0.5)
+# the average of residual will always be 0
+
+ggplot(sim1, aes(x, resid)) + 
+  geom_point() + 
+  geom_ref_line(h = 0)
